@@ -22,7 +22,6 @@ require_once(plugin_dir_path(__FILE__).'includes/exception/fileDownloadException
 require_once(plugin_dir_path(__FILE__).'models/EntityCollection.php');
 require_once(plugin_dir_path(__FILE__).'models/Entity.php');
 require_once(plugin_dir_path(__FILE__).'models/Option.php');
-require_once(plugin_dir_path(__FILE__).'models/ConfigOption.php');
 require_once(plugin_dir_path(__FILE__).'models/Published.php');
 
 class SociallymapPlugin
@@ -178,7 +177,7 @@ class SociallymapPlugin
 
             $collector = new EntityCollection();
             $_POST['entityId'] = esc_html($_POST['entityId']);
-            $entity = $collector->getByEntityId($_POST['entityId']);
+            $entity = $collector->getByEntityId(intval($_POST['entityId']));
 
 
             // Context : Testing connection between sociallymap and wordpress plugin
@@ -360,9 +359,11 @@ class SociallymapPlugin
         }
 
         if (isset($morebalise) && $morebalise == '1') {
-            $content = preg_replace('#<p><a class="sm-readmore#', '<!--more--><p><a class="sm-readmore', $content);
-        } else {
-            $content = preg_replace('#<p><a class="sm-readmore#"', '<p><a class="sm-readmore', $content);
+            if (preg_match('#<!--more-->#', $content) === 0) {
+                $content = preg_replace('#<p><a class="sm-readmore#', '<!--more--><p><a class="sm-readmore', $content);
+            }
+        } elseif ($morebalise == '0') {
+            $content = preg_replace('#<!--more--><p><a class="sm-readmore#"', '<p><a class="sm-readmore', $content);
         }
 
         // $content = preg_replace('#data-display-type#', 'data-display-type="'.$display_type.'"', $content);
@@ -689,10 +690,13 @@ class SociallymapPlugin
 
         $posts_array = get_posts($args);
 
-        foreach ($posts_array as $key => $value) {
-            $newContent = $this->prePosting($value->post_content);
+        $postPublishedSearch = new Published();
+        $postedArticles = $postPublishedSearch->all();
+        foreach ($postedArticles as $key => $value) {
+            $pickedPost = get_post($value->post_id);
+            $newContent = $this->prePosting($pickedPost->post_content);
             $postUpdate = [
-                'ID' => $value->ID,
+                'ID' => $pickedPost->ID,
                 'post_content' => $newContent,
             ];
 
@@ -703,6 +707,22 @@ class SociallymapPlugin
     public function entityManager()
     {
         $entityCollection = new EntityCollection();
+
+        // SANITIZE ALL DATA
+        if (isset($_POST)) {
+            foreach ($_POST as $key => &$value) {
+
+                if (is_array($value)) {
+                    // FOR ARRAY OBJECT
+                    foreach ($value as $keyItem => &$valueItem) {
+                        $valueItem = sanitize_text_field($valueItem);
+                    }
+                } else {
+                    // FOR VALUE
+                    $value = sanitize_text_field($value);
+                }
+            }
+        }
 
         // check http or https
         if (isset($_SERVER['HTTPS'])) {
@@ -732,7 +752,12 @@ class SociallymapPlugin
             }
             if (!isset($_POST['sociallymap_category'])) {
                 $_POST['sociallymap_category'] = [];
+            } else {
+                foreach ($_POST['sociallymap_category'] as $key => &$value) {
+                    $value = esc_html($value);
+                }
             }
+
             if (!isset($_POST['sociallymap_display_type'])) {
                 $_POST['sociallymap_display_type'] = 'tab';
             }
@@ -795,7 +820,12 @@ class SociallymapPlugin
 
             if (!isset($_POST['sociallymap_category'])) {
                 $_POST['sociallymap_category'] = '';
+            } else {
+                foreach ($_POST['sociallymap_category'] as $key => &$value) {
+                    $value = esc_html($value);
+                }
             }
+
             if (!isset($_POST['sociallymap_display_type'])) {
                 $_POST['sociallymap_display_type'] = 'tab';
             }
@@ -808,9 +838,12 @@ class SociallymapPlugin
             if (!isset($_POST['sociallymap_noFollow'])) {
                 $_POST['sociallymap_noFollow'] = 0;
             }
-            if (!isset($_POST['sociallymap_readmore'])) {
+            if (isset($_POST['sociallymap_readmore'])) {
+                $_POST['sociallymap_readmore'] = stripslashes($_POST['sociallymap_readmore']);
+            } else {
                 $_POST['sociallymap_readmore'] = '';
             }
+
             if (!isset($_POST['sociallymap_morebalise'])) {
                 $_POST['sociallymap_morebalise'] = '';
             }
@@ -822,7 +855,7 @@ class SociallymapPlugin
 
             $data = [
                 'name'           => esc_html($_POST['sociallymap_name']),
-                'category'       => esc_html($_POST['sociallymap_category']),
+                'category'       => $_POST['sociallymap_category'],
                 'activate'       => esc_html($_POST['sociallymap_activate']),
                 'sm_entity_id'   => esc_html($_POST['sociallymap_entityId']),
                 'publish_type'   => esc_html($_POST['sociallymap_publish_type']),
