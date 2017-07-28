@@ -36,6 +36,7 @@ class Requester
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => false,
             CURLOPT_URL            => $targetUrl,
+            CURLOPT_FOLLOWLOCATION => true
         ];
 
         curl_setopt_array($curl, $options);
