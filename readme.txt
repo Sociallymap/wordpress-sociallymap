@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Sociallymap Connect ===
 Plugin Name: Sociallymap Connect
 Contributors: Alhena Conseil
 Plugin URI: http://www.sociallymap.com/
@@ -6,8 +6,8 @@ Description: A plugin that let the sociallymap users post on their blog from the
 Version: 1.0
 Tags: sociallymap, autopublish
 Requires at least: 3.8.12
-Stable tag: 4.4.1
-Tested up to: 4.4.1
+Stable tag: 4.8
+Tested up to: 4.8
 Author: Sociallymap
 Author URI: http://www.sociallymap.com/
 License: Alhena © 2016
