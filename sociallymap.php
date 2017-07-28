@@ -3,7 +3,7 @@
 Plugin Name: Sociallymap
 Plugin URI: http://www.sociallymap.com/
 Description: A plugin that let the sociallymap users post on their blog from their mapping
-Version: 1.0
+Version: 1.9.3
 Author: Alhena Conseil
 Author URI: http://www.sociallymap.com/
 License: Alhena © 2016
