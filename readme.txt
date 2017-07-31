@@ -60,4 +60,3 @@ Libellé de la phrase permettant de lire la suite de l’article. Cette phrase s
 == Screenshots ==
 1. Options d'une entité
 2. Exemple d'article publié
-
