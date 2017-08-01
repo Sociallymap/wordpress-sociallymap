@@ -18,7 +18,7 @@ require_once(plugin_dir_path(__FILE__).'includes/MockRequester.php');
 require_once(plugin_dir_path(__FILE__).'includes/FileDownloader.php');
 require_once(plugin_dir_path(__FILE__).'includes/MediaWordpressManager.php');
 require_once(plugin_dir_path(__FILE__).'includes/SociallymapController.php');
-require_once(plugin_dir_path(__FILE__).'includes/exception/fileDownloadException.php');
+require_once(plugin_dir_path(__FILE__).'includes/exception/FileDownloadException.php');
 require_once(plugin_dir_path(__FILE__).'models/EntityCollection.php');
 require_once(plugin_dir_path(__FILE__).'models/Entity.php');
 require_once(plugin_dir_path(__FILE__).'models/Option.php');
