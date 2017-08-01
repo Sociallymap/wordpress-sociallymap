@@ -7,6 +7,7 @@ class Requester
         if (!is_callable('curl_init')) {
             Logger::error('Curl no exist, request impossible..');
             header('HTTP/1.0 501 Not Implemented');
+
             exit('Curl request impossible for wordpress server');
         }
 
@@ -29,7 +30,7 @@ class Requester
         $targetUrl = $urlCreator['baseUrl'].'/raw-exporter/'.$urlCreator['entityId'].
         '/feed?token='.$urlCreator['token'];
 
-        logger::info('Request CURL at '.$targetUrl);
+        Logger::info('Request CURL at ' . $targetUrl);
 
         $options = [
             // Return the transfer, don't display it
@@ -49,13 +50,12 @@ class Requester
         curl_close($curl);
 
         if ($_ENV['environnement'] == 'dev' || $_ENV['environnement'] == 'debug') {
-            Logger::info('Result of request : '.$result);
+            Logger::info('Result of request : ' . $result);
         }
 
         try {
-            // If the response isn't a string
-            if (! $result) {
-                throw new Exception('Wrong response format', 1);
+            if (!$result) {
+                throw new Exception('Wrong response format');
             }
 
             // Decode the JSON response
@@ -63,11 +63,12 @@ class Requester
 
             // The request failed
             if ($requestInfos['http_code'] !== 200) {
-                throw new Exception($result->message, 1);
+                throw new Exception($result->message);
             }
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             header('HTTP/1.0 502 Bad Gateway');
-            Logger::error($e->getMessage().'\n');
+            Logger::error($exception->getMessage());
+
             exit;
         }
 

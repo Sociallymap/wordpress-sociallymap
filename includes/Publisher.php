@@ -25,8 +25,9 @@ class Publisher
 
         try {
             $newPostId = wp_insert_post($post);
-        } catch (Exception $e) {
-            logger::alert($e->getMessage());
+        } catch (Exception $exception) {
+            Logger::alert($exception->getMessage());
+
             return false;
         }
 

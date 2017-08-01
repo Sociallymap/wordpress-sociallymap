@@ -64,8 +64,8 @@ class Logger
         $logContent = sprintf('[%s] # %s : %s', date('Y-m-d H:i:s'), $label, $message);
         error_log($logContent.PHP_EOL, 3, $fileLocation);
 
-        if ($context !== []) {
-            error_log('CONTEXT : '.print_r($context, true).PHP_EOL, 3, $fileLocation);
+        if ($context) {
+            error_log('CONTEXT : ' . print_r($context, true) . PHP_EOL, 3, $fileLocation);
         }
     }
 }

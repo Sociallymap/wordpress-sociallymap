@@ -28,11 +28,11 @@ class FileDownloader
         // check header
         $checkerResponse = $this->checkResponseContentType($responseCurl);
         if (!$checkerResponse) {
-            throw new fileDownloadException('Error Processing Request for '.$url, 1);
+            throw new FileDownloadException('Error Processing Request for ' . $url);
         }
 
         // Get extension for return
-        $fileExtension = '.'.pathinfo($response, PATHINFO_EXTENSION);
+        $fileExtension = '.' . pathinfo($response, PATHINFO_EXTENSION);
 
 
         //CREATE FILE
@@ -92,8 +92,9 @@ class FileDownloader
                 $acceptHeader = true;
                 $this->currentExtension = '.'.substr($contentType, 6);
             } else {
-                $messageException = 'ERROR DOWNLOAD : Header is not correct (not image or video)'.$contentType.' | url: '.$response;
-                throw new fileDownloadException($messageException, 1);
+                $messageException = 'ERROR DOWNLOAD : Header is not correct (not image or video)' . $contentType .
+                    ' | url: ' . $response;
+                throw new FileDownloadException($messageException);
             }
         }
 

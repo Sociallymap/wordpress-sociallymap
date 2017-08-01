@@ -136,7 +136,6 @@ class SociallymapPlugin
         $this->loadAssets(true);
 
         remove_action('wp_head', 'rel_canonical');
-        // add_action('wp_head', [$this, 'rewriteCanonical']);
         add_action('wp_head', [$this, 'customRelCanonical']);
         add_action('wp_head', [$this, 'noIndexRef']);
 
@@ -145,7 +144,7 @@ class SociallymapPlugin
             $entity = $collector->getByEntityId('568ccccd7c5a00c6629e884f');
 
             if (!$entity) {
-                Logger::error('DEV MODE : Entity cann\'t be load!');
+                Logger::error('DEV MODE : Entity can\'t be load !');
             } else {
                 $this->manageMessages($entity);
             }
@@ -496,8 +495,7 @@ class SociallymapPlugin
             }
 
             if (empty($jsonData)) {
-                throw new Exception('No data returned from request', 1);
-                exit();
+                throw new Exception('No data returned from request');
             }
 
             Logger::messageReceive('See return data', $jsonData);
@@ -547,7 +545,7 @@ class SociallymapPlugin
                 $messageId = $value->guid;
                 if ($published->isPublished($messageId)) {
                     $contextMessageId = '(id message='.$messageId.')';
-                    Logger::alert('Message of sociallymap existing, so he is not publish', $contextMessageId);
+                    Logger::alert('Message from sociallymap already existing, won\'t be published', $contextMessageId);
                     $canBePublish = false;
                     continue;
                 }
@@ -562,8 +560,8 @@ class SociallymapPlugin
                         $mediaManager = new MediaWordpressManager();
                         $imageSrc = $mediaManager->integrateMediaToWordpress($filename, $fileExtension);
 
-                    } catch (fileDownloadException $e) {
-                        Logger::error('error download'.$e);
+                    } catch (FileDownloadException $exception) {
+                        Logger::error('error download' . $exception);
                     }
 
                     // WHEN NO ERROR : FORMAT
@@ -578,8 +576,8 @@ class SociallymapPlugin
                         $returnDownload = $downloader->download($value->link->thumbnail, $pathTempory);
                         $filename = $returnDownload['filename'];
                         $fileExtension = $returnDownload['extension'];
-                    } catch (fileDownloadException $e) {
-                        Logger::error('error download'.$e);
+                    } catch (FileDownloadException $exception) {
+                        Logger::error('error download' . $exception);
                     }
 
                     $mediaManager = new MediaWordpressManager();
@@ -604,7 +602,7 @@ class SociallymapPlugin
                     $videoSrc = $mediaManager->integrateMediaToWordpress($filename, $fileExtension);
 
                     $mediaVideo = '<video class="sm-video-display" controls>
-                    <source src="'.$videoSrc.'" type="video/mp4">
+                    <source src="' . $videoSrc . '" type="video/mp4">
                     <div class="sm-video-nosupport"></div>
                     </video>';
                     $contentArticle .= $mediaVideo;
@@ -637,7 +635,8 @@ class SociallymapPlugin
                             $author,
                             $imageAttachment,
                             $entityListCategory,
-                            $entityPublishType];
+                            $entityPublishType
+                        ];
 
                         Logger::info('Try publish : ', $dataPublish);
 
@@ -653,7 +652,6 @@ class SociallymapPlugin
                         );
 
                         if (!$articlePublished) {
-                            // throw new Exception('Error from post publish', 1);
                             Logger::error('Error from post publish', [$title]);
                         } else {
                             $entityObject->updateHistoryPublisher($entity->id, $entity->counter);
@@ -662,8 +660,8 @@ class SociallymapPlugin
                         }
                 }
             }
-        } catch (Exception $e) {
-            Logger::alert('Error exeption', $e->getMessage());
+        } catch (Exception $exception) {
+            Logger::alert('Error exeption : ' . $exception->getMessage());
         }
         return true;
     }

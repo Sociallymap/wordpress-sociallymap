@@ -8,7 +8,7 @@ class Entity
     {
         global $wpdb;
 
-        $this->table = $wpdb->prefix.'sm_entities';
+        $this->table = $wpdb->prefix . 'sm_entities';
     }
 
     public function save($data)
@@ -20,11 +20,11 @@ class Entity
         return $wpdb->insert_id;
     }
 
-    public function getById($id, $orderKey = '', $orderSense = '')
+    public function getById($id)
     {
         global $wpdb;
 
-        $entityRequest = $wpdb->prepare('SELECT * FROM '.$this->table.' WHERE id=%s', $id);
+        $entityRequest = $wpdb->prepare('SELECT * FROM ' . $this->table . ' WHERE id=%s', $id);
         $entity = $wpdb->get_row($entityRequest);
 
         if (!isset($entity) || empty($entity)) {
@@ -32,8 +32,10 @@ class Entity
             return 0;
         }
 
-        $optionsRequest = $wpdb->prepare('SELECT options_id, value FROM '.$wpdb->prefix.
-            'sm_entity_options WHERE entity_id = %s', $entity->id);
+        $optionsRequest = $wpdb->prepare(
+            'SELECT options_id, value FROM ' . $wpdb->prefix . 'sm_entity_options WHERE entity_id = %s',
+            $entity->id
+        );
         $options = $wpdb->get_results($optionsRequest);
 
         $options = json_decode(json_encode($options), true);
@@ -50,14 +52,17 @@ class Entity
     {
         global $wpdb;
 
-        $entityRequest = $wpdb->prepare('SELECT * FROM '.$this->table.' WHERE sm_entity_id=%s', $entityId);
+        $entityRequest = $wpdb->prepare('SELECT * FROM ' . $this->table . ' WHERE sm_entity_id=%s', $entityId);
         $entity = $wpdb->get_row($entityRequest);
 
         if (empty($entity)) {
             return false;
         }
 
-        $optionsRequest = $wpdb->prepare('SELECT options_id, value FROM '.$wpdb->prefix.'sm_entity_options WHERE entity_id=%s', $entity->id);
+        $optionsRequest = $wpdb->prepare(
+            'SELECT options_id, value FROM ' . $wpdb->prefix . 'sm_entity_options WHERE entity_id=%s',
+            $entity->id
+        );
         $options = $wpdb->get_results($optionsRequest);
 
         $options = json_decode(json_encode($options), true);
@@ -95,7 +100,8 @@ class Entity
             [ 'ID' => $data['id'] ],
             [
                '%s',
-               '%d'], // value1
+               '%d'
+            ], // value1
             ['%d']
         );
     }
@@ -109,8 +115,8 @@ class Entity
         $wpdb->update(
             $this->table,
             [
-                'last_published_message'     => date('Y-m-d H:i:s'),    // string
-               'counter'     => $counter,    // string
+                'last_published_message' => date('Y-m-d H:i:s'),    // string
+               'counter' => $counter,    // string
             ],
             [ 'ID' => $id ],
             ['%s', '%d'], // value1

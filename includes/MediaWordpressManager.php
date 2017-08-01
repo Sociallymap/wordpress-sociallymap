@@ -23,21 +23,18 @@ class MediaWordpressManager
         // Do the validation and storage stuff.
         $id = media_handle_sideload($file_array, 0);
 
-        $data = 'ERROR DOWNLOAD FOR '.print_r($id, true).' | url: '.$temporyFile.print_r($file_array, true);
+        $data = 'ERROR DOWNLOAD FOR ' . print_r($id, true) . ' | url: ' . $temporyFile . print_r($file_array, true);
 
-        // @todo throw
         if (gettype($id) != 'integer') {
-            throw new fileDownloadException($data, 1);
+            throw new FileDownloadException($data);
         }
 
         $src = wp_get_attachment_url($id);
 
-        // @todo throw
         if (gettype($src) != 'string') {
-            throw new fileDownloadException('ERROR DOWNLOAD FOR '.$src.' | url: '.$temporyFile, 1);
-            return $src;
-        } else {
-            return $src;
+            throw new FileDownloadException('ERROR DOWNLOAD FOR ' . $src.' | url: ' . $temporyFile);
         }
+
+        return $src;
     }
 }
