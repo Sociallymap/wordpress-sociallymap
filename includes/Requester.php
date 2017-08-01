@@ -17,7 +17,7 @@ class Requester
         $envtype = $envtype[$environement];
 
         if (empty($envtype)) {
-            $envtype = 'http://app.sociallymap.com';
+            $envtype = 'https://app.sociallymap.com';
         }
 
         $urlCreator = [
@@ -34,9 +34,9 @@ class Requester
 
         $options = [
             // Return the transfer, don't display it
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER         => false,
             CURLOPT_URL            => $targetUrl,
+            CURLOPT_HEADER         => false,
+            CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true
         ];
 

@@ -9,13 +9,13 @@ Requires at least: 3.8.12
 Stable tag: 4.8.0
 Tested up to: 4.8.0
 Author: Sociallymap
-Author URI: http://www.sociallymap.com/
+Author URI: https://www.sociallymap.com/
 License: Alhena © 2017
 
 Wordpress sociallymap connect vous permet de publier automatiquement vos articles depuis votre mapping de l'application Sociallymap.
 
 == Description ==
-Wordpress sociallymap connect est un plugin permettant l'automatisation de publication d'articles. Plus d'informations concernant l'application sociallymap, consultez notre site http://www.sociallymap.com/.
+Wordpress sociallymap connect est un plugin permettant l'automatisation de publication d'articles. Plus d'informations concernant l'application sociallymap, consultez notre site https://www.sociallymap.com/.
 
 Les options disponible du plugin sont les suivantes :
 Label :
@@ -93,7 +93,7 @@ Libellé de la phrase permettant de lire la suite de l’article. Cette phrase s
 * Mise à jour de l'option readmore
 
 == Upgrade Notice ==
- 
+
 = 1.9.3 =
 Mise à jour nécessaire pour suivre le passage en connexions sécurisées
 

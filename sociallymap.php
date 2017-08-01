@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Sociallymap
-Plugin URI: http://www.sociallymap.com/
+Plugin URI: https://www.sociallymap.com/
 Description: A plugin that let the sociallymap users post on their blog from their mapping
 Version: 1.9.3
 Author: Alhena Conseil
-Author URI: http://www.sociallymap.com/
+Author URI: https://www.sociallymap.com/
 License: Alhena © 2016
 */
 
@@ -44,9 +44,9 @@ class SociallymapPlugin
         $environment = '';
 
         $_ENV['URL_SOCIALLYMAP'] = [
-            'prod'    => 'http://app.sociallymap.com',
-            'staging' => 'http://app.sociallymap-staging.com',
-            'dev'     => 'http://app.sociallymap.local',
+            'prod'    => 'https://app.sociallymap.com',
+            'staging' => 'https://app.sociallymap-staging.com',
+            'dev'     => 'http://app.sociallymap.dev',
         ];
 
         // DEV MOD : Active mock requester
