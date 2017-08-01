@@ -1,12 +1,12 @@
 <?php
 /*
-Plugin Name: Sociallymap
+Plugin Name: Sociallymap Connect
 Plugin URI: https://www.sociallymap.com/
 Description: A plugin that let the sociallymap users post on their blog from their mapping
-Version: 1.9.3
-Author: Alhena Conseil
+Version: 1.9.5
+Author: Sociallymap
 Author URI: https://www.sociallymap.com/
-License: Alhena © 2016
+License: Alhena © 2017
 */
 
 require_once(plugin_dir_path(__FILE__).'includes/Templater.php');
