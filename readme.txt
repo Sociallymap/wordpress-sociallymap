@@ -1,7 +1,7 @@
 === Sociallymap Connect ===
 Plugin Name: Sociallymap Connect
-Contributors: Alhena Conseil
-Plugin URI: http://www.sociallymap.com/
+Contributors: sociallymap
+Plugin URI: https://wordpress.org/plugins/connect-sociallymap/
 Description: A plugin that let the sociallymap users post on their blog from their mapping
 Version: 1.9.3
 Tags: sociallymap, autopublish
@@ -10,7 +10,7 @@ Stable tag: 4.8.0
 Tested up to: 4.8.0
 Author: Sociallymap
 Author URI: http://www.sociallymap.com/
-License: Alhena © 2016
+License: Alhena © 2017
 
 Wordpress sociallymap connect vous permet de publier automatiquement vos articles depuis votre mapping de l'application Sociallymap.
 
@@ -60,3 +60,40 @@ Libellé de la phrase permettant de lire la suite de l’article. Cette phrase s
 == Screenshots ==
 1. Options d'une entité
 2. Exemple d'article publié
+
+== Changelog ==
+= 1.9.3 =
+* Correction connections sécurisées
+
+= 1.9.1 =
+* Ajout de l'image de présentation sur le wordpress plugin store.
+
+= 1.8 =
+* Restructuration du système d'affichage de la modal pour un bug survenant lors de l'affichage de certains sites
+
+= 1.7 =
+* Réajustement d'un bug qui afficher une boite de dialog lors de l'ouverture de la modale
+
+= 1.6 =
+* Fonctionnement de la modal en cas d'utilisation de google alert
+
+= 1.5 =
+* Ajustement de la description de l'application
+
+= 1.4 =
+* Ajustement du style pour la version 3.x de wordpress
+
+= 1.3 =
+* Switch sur la version 1.3
+
+= 1.2 =
+* Switch sur la version 1.2
+
+= 1.1 =
+* Mise à jour de l'option readmore
+
+== Upgrade Notice ==
+ 
+= 1.9.3 =
+Mise à jour nécessaire pour suivre le passage en connexions sécurisées
+
