@@ -3,7 +3,7 @@ Plugin Name: Sociallymap Connect
 Contributors: sociallymap
 Plugin URI: https://wordpress.org/plugins/connect-sociallymap/
 Description: A plugin that let the sociallymap users post on their blog from their mapping
-Version: 1.9.5
+Version: 1.9.6
 Tags: sociallymap, autopublish
 Requires at least: 3.8.12
 Stable tag: 4.8.0
