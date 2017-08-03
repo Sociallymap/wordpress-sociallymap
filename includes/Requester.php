@@ -33,37 +33,42 @@ class Requester
         Logger::info('Request CURL at ' . $targetUrl);
 
         $options = [
-            // Return the transfer, don't display it
             CURLOPT_URL            => $targetUrl,
             CURLOPT_HEADER         => false,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true
+            CURLOPT_FOLLOWLOCATION => true,
         ];
 
         curl_setopt_array($curl, $options);
 
-        $result = curl_exec($curl);
+        $response = curl_exec($curl);
+        $curl_errno = curl_errno($curl);
+        $curl_error = curl_error($curl);
         $requestInfos = curl_getinfo($curl);
 
-
-        // Close the curl session and free allocated memory
         curl_close($curl);
 
         if ($_ENV['environnement'] == 'dev' || $_ENV['environnement'] == 'debug') {
-            Logger::info('Result of request : ' . $result);
+            Logger::info('Result of request : ' . $response);
         }
 
         try {
-            if (!$result) {
-                throw new Exception('Wrong response format');
+            if (!$response) {
+                $errorMessage = sprintf(
+                    'Empty response with error #%s : %s',
+                    $curl_errno,
+                    $curl_error
+                );
+
+                throw new Exception($errorMessage);
             }
 
             // Decode the JSON response
-            $result = json_decode($result);
+            $jsonResponse = json_decode($response);
 
             // The request failed
             if ($requestInfos['http_code'] !== 200) {
-                throw new Exception($result->message);
+                throw new Exception($jsonResponse->message);
             }
         } catch (Exception $exception) {
             header('HTTP/1.0 502 Bad Gateway');
@@ -72,7 +77,6 @@ class Requester
             exit;
         }
 
-
-        return $result;
+        return $jsonResponse;
     }
 }

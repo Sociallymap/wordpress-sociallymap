@@ -18,7 +18,7 @@ require_once(plugin_dir_path(__FILE__).'includes/MockRequester.php');
 require_once(plugin_dir_path(__FILE__).'includes/FileDownloader.php');
 require_once(plugin_dir_path(__FILE__).'includes/MediaWordpressManager.php');
 require_once(plugin_dir_path(__FILE__).'includes/SociallymapController.php');
-require_once(plugin_dir_path(__FILE__).'includes/exception/FileDownloadException.php');
+require_once(plugin_dir_path(__FILE__).'includes/Exception/FileDownloadException.php');
 require_once(plugin_dir_path(__FILE__).'models/EntityCollection.php');
 require_once(plugin_dir_path(__FILE__).'models/Entity.php');
 require_once(plugin_dir_path(__FILE__).'models/Option.php');
@@ -29,7 +29,6 @@ class SociallymapPlugin
     private $wpdb;
     private $templater;
     private $controller;
-    private $config_default_value;
     private $link_canononical;
 
     public function __construct()
@@ -41,7 +40,6 @@ class SociallymapPlugin
         }
 
         $this->wpdb = $wpdb;
-        $environment = '';
 
         $_ENV['URL_SOCIALLYMAP'] = [
             'prod'    => 'https://app.sociallymap.com',
@@ -49,7 +47,7 @@ class SociallymapPlugin
             'dev'     => 'http://app.sociallymap.dev',
         ];
 
-        // DEV MOD : Active mock requester
+        // DEV MODE : Activate mock requester
         $_ENV['ENVIRONNEMENT'] = 'prod';
 
         $this->templater = new Templater();
@@ -112,22 +110,23 @@ class SociallymapPlugin
 
         $entityPicked = $entityObject->getById($idSelect);
 
-        foreach ($entityPicked->options as $key => $value) {
+        foreach ($entityPicked->options as $value) {
             if ($value->options_id == '4') {
                 $link_canonical = $value->value;
             }
         }
 
-        // entity unknown
+        // unknown entity
         if (empty($entityPicked)) {
             Logger::alert('Rewrite link canonical : Entity Unknown');
             return false;
         }
 
         if ($link_canonical) {
-            // replace the default WordPress canonical URL function with your own
+            // replace the default WordPress canonical URL function with our own
             $this->link_canononical = $entityUrl;
         }
+
         return $content;
     }
 
@@ -197,7 +196,6 @@ class SociallymapPlugin
                         'error' => 'entityId inconnu'
                     ]));
                 } else {
-                    // header('Content-Type: application/json');
                     header('HTTP/1.0 200 OK');
                     exit(json_encode([
                         'message' => 'ok'
@@ -212,7 +210,7 @@ class SociallymapPlugin
             }
 
             // Try to retrieve the pending messages
-            if ($this->manageMessages($entity) == false) {
+            if (!$this->manageMessages($entity)) {
                 header('HTTP/1.0 502 Bad gateway');
                 Logger::error('The plugin can\'t ping to sociallymap');
             } else {
@@ -221,7 +219,6 @@ class SociallymapPlugin
                     'message' => 'ok'
                 ]));
             }
-
         }
     }
 
@@ -452,7 +449,7 @@ class SociallymapPlugin
 
         // The entity is not active
         if (!$entity->activate) {
-            return 0;
+            return false;
         }
 
         // Retrieve the entity categories
@@ -663,6 +660,7 @@ class SociallymapPlugin
         } catch (Exception $exception) {
             Logger::alert('Error exeption : ' . $exception->getMessage());
         }
+
         return true;
     }
 

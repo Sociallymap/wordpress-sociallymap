@@ -91,10 +91,12 @@ class FileDownloader
 
             if (substr($contentType, 0, 6) == 'image/' || substr($contentType, 0, 6) == 'video/') {
                 $acceptHeader = true;
-                $this->currentExtension = '.'.substr($contentType, 6);
+                $this->currentExtension = '.' . substr($contentType, 6);
             } else {
-                $messageException = 'ERROR DOWNLOAD : Header is not correct (not image or video)' . $contentType .
-                    ' | url: ' . $response;
+                $messageException = sprintf('Media download error: Header is not correct (not image or video) "%s"',
+                    $contentType
+                );
+
                 throw new FileDownloadException($messageException);
             }
         }
